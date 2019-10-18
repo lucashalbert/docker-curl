@@ -1,6 +1,6 @@
 FROM amd64/alpine
 
-ENV BUILD_DATE=20191018T224034 \
+ENV BUILD_DATE=20191018T230012 \
     PARAMS=""
 
 LABEL build_version="Build-date: ${BUILD_DATE}"

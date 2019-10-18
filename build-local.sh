@@ -30,7 +30,9 @@ for docker_arch in amd64 arm32v6 arm64v8; do
     # Build
     if [ "$EUID" -ne 0 ]; then
         sudo docker build -f Dockerfile.${docker_arch} -t lucashalbert/docker-curl:${docker_arch} .
+        #sudo docker push lucashalbert/docker-curl:${docker_arch}
     else
         docker build -f Dockerfile.${docker_arch} -t lucashalbert/docker-curl:${docker_arch} .
+        #docker push lucashalbert/docker-curl:${docker_arch}
     fi
 done
