@@ -1,0 +1,21 @@
+FROM arm64v8/alpine
+
+ENV BUILD_DATE=20191018T224034 \
+    QEMU_ARCH=aarch64 \
+    PARAMS=""
+
+LABEL build_version="Build-date: ${BUILD_DATE}"
+LABEL maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>"
+MAINTAINER Lucas Halbert <lhalbert@lhalbert.xyz>
+
+# COPY static qemu binary for cross-platform support
+COPY qemu-${QEMU_ARCH}-static /usr/bin/
+
+RUN apk add --no-cache --update ca-certificates curl
+
+#  Delete static qemu binary
+RUN rm -f /usr/bin/qemu-${QEMU_ARCH}-static
+
+COPY docker-entrypoint.sh /usr/bin/
+
+ENTRYPOINT ["curl"]
