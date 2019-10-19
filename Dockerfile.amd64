@@ -1,6 +1,6 @@
 FROM amd64/alpine
 
-ENV BUILD_DATE=20191018T230012 \
+ENV BUILD_DATE=20191019T015949 \
     PARAMS=""
 
 LABEL build_version="Build-date: ${BUILD_DATE}"
@@ -13,4 +13,4 @@ RUN apk add --no-cache --update ca-certificates curl
 
 COPY docker-entrypoint.sh /usr/bin/
 
-ENTRYPOINT ["curl"]
+ENTRYPOINT ["/usr/bin/curl"]

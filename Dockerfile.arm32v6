@@ -1,6 +1,6 @@
 FROM arm32v6/alpine
 
-ENV BUILD_DATE=20191018T230012 \
+ENV BUILD_DATE=20191019T015949 \
     QEMU_ARCH=arm \
     PARAMS=""
 
@@ -18,4 +18,4 @@ RUN rm -f /usr/bin/qemu-${QEMU_ARCH}-static
 
 COPY docker-entrypoint.sh /usr/bin/
 
-ENTRYPOINT ["curl"]
+ENTRYPOINT ["/usr/bin/curl"]
