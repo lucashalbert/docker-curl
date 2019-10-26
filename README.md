@@ -1,14 +1,14 @@
 [curl-home]: https://curl.haxx.se/
 [travis]: https://travis-ci.org/lucashalbert/docker-curl
-[microbadger]: https://microbadger.com/images/lucashalbert/docker-curl
-[dockerstore]: https://store.docker.com/community/images/lucashalbert/docker-curl
-# docker-curl (curl v7.66.0)
+[microbadger]: https://microbadger.com/images/lucashalbert/curl
+[dockerstore]: https://store.docker.com/community/images/lucashalbert/curl
+# docker-curl
 A multi-architecture curl image built on alpine linux. This image is compatible with arm32v6, arm32v7, arm64v8, and x86_64.
 
 [![Travis-CI Build Status](https://travis-ci.org/lucashalbert/docker-curl.svg?branch=master)][travis]
-[![Docker Layers](https://images.microbadger.com/badges/image/lucashalbert/docker-curl.svg)][microbadger]
-[![Docker Pulls](https://img.shields.io/docker/pulls/lucashalbert/docker-curl.svg)][dockerstore]
-[![Docker Stars](https://img.shields.io/docker/stars/lucashalbert/docker-curl.svg)][dockerstore]
+[![Docker Layers](https://images.microbadger.com/badges/image/lucashalbert/curl.svg)][microbadger]
+[![Docker Pulls](https://img.shields.io/docker/pulls/lucashalbert/curl.svg)][dockerstore]
+[![Docker Stars](https://img.shields.io/docker/stars/lucashalbert/curl.svg)][dockerstore]
 
 ## Curl
 Excerpt from the curl [homepage][curl-home].

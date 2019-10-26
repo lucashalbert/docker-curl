@@ -1,4 +1,5 @@
 #!/bin/bash
+curl_ver=${curl_ver:-$(curl "https://pkgs.alpinelinux.org/packages?name=curl&branch=edge&repo=main&arch=x86_64" | grep "text-success" | sed 's/<[^>]*>//g' | tr -d " ")}
 build_date=${build_date:-$(date +"%Y%m%dT%H%M%S")}
 
 for docker_arch in amd64 arm32v6 arm64v8; do
@@ -10,6 +11,7 @@ for docker_arch in amd64 arm32v6 arm64v8; do
     cp Dockerfile.cross Dockerfile.${docker_arch}
     sed -i "s|__BASEIMAGE_ARCH__|${docker_arch}|g" Dockerfile.${docker_arch}
     sed -i "s|__QEMU_ARCH__|${qemu_arch}|g" Dockerfile.${docker_arch}
+    sed -i "s|__CURL_VER__|${curl_ver}|g" Dockerfile.${docker_arch}
     sed -i "s|__BUILD_DATE__|${build_date}|g" Dockerfile.${docker_arch}
     if [ ${docker_arch} == 'amd64' ]; then
         sed -i "/__CROSS__/d" Dockerfile.${docker_arch}
