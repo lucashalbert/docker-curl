@@ -54,6 +54,8 @@ metadata:
   name: name-example
 spec:
   schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
