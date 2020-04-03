@@ -1,6 +1,6 @@
 [curl-home]: https://curl.haxx.se/
 [curl-github]: https://github.com/curl/curl
-[gitub-lucashalbert/docker-curl]: https://github.com/lucashalbert/docker-curl
+[github-lucashalbert/docker-curl]: https://github.com/lucashalbert/docker-curl
 [travis]: https://travis-ci.com/lucashalbert/docker-curl
 [microbadger]: https://microbadger.com/images/lucashalbert/curl
 [dockerstore]: https://store.docker.com/community/images/lucashalbert/curl
@@ -9,10 +9,11 @@
 A multi-architecture curl image built on alpine linux. This image is compatible with arm32v6, arm32v7, arm64v8, and x86_64.
 
 [![Travis-CI Build Status](https://travis-ci.com/lucashalbert/docker-curl.svg?branch=master)][travis]
-[![Image Version](https://img.shields.io/docker/v/lucashalbert/curl/latest)][gitub-lucashalbert/docker-curl]
-[![Image Size](https://img.shields.io/docker/image-size/lucashalbert/curl)][dockerstore]
-[![Docker Pulls](https://img.shields.io/docker/pulls/lucashalbert/curl.svg)][dockerstore]
-[![Docker Stars](https://img.shields.io/docker/stars/lucashalbert/curl.svg)][dockerstore]
+[![Image Version](https://img.shields.io/docker/v/lucashalbert/curl/latest)][github-lucashalbert/docker-curl]
+[![Image Layers](https://img.shields.io/microbadger/layers/lucashalbert/curl/latest)][dockerstore]
+[![Image Size](https://badgen.net/docker/size/lucashalbert/curl)][dockerstore]
+[![Docker Pulls](https://badgen.net/docker/pulls/lucashalbert/curl)][dockerstore]
+[![Docker Stars](https://badgen.net/docker/stars/lucashalbert/curl?icon=docker&label=stars)][dockerstore]
 
 ---
 
