@@ -47,3 +47,24 @@ Check out the latest [source code from github][curl-github].
 ```
 docker run lucashalbert/curl https://curl.haxx.se
 ```
+### Run in Kubernetes + cron job:
+```
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: name-example
+spec:
+  schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: name-example
+            image: lucashalbert/curl:latest
+            args:
+            - "https://curl.haxx.se"
+          restartPolicy: OnFailure
+```
