@@ -1,5 +1,5 @@
 #!/bin/bash
-curl_ver=${curl_ver:-$(curl "https://pkgs.alpinelinux.org/packages?name=curl&branch=edge&repo=main&arch=x86_64" | grep "text-success" | sed 's/<[^>]*>//g' | tr -d " ")}
+curl_ver=${curl_ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
 build_date=${build_date:-$(date +"%Y%m%dT%H%M%S")}
 
 for docker_arch in amd64 arm32v6 arm64v8; do
