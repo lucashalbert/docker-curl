@@ -9,8 +9,8 @@ for docker_arch in ${docker_archs[@]}; do
     case ${docker_arch} in
         i386 )    qemu_arch="i386"    ;;
         amd64   ) qemu_arch="x86_64"  ;;
-        arm32v6 ) qemu_arch="armhf"     ;;
-        arm32v7 ) qemu_arch="armv7"     ;;
+        arm32v6 ) qemu_arch="arm"     ;;
+        arm32v7 ) qemu_arch="arm"     ;;
         arm64v8 ) qemu_arch="aarch64" ;;
         ppc64le ) qemu_arch="ppc64le" ;;
         s390x )   qemu_arch="s390x"   ;;
