@@ -2,11 +2,18 @@
 curl_ver=${curl_ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
 build_date=${build_date:-$(date +"%Y%m%dT%H%M%S")}
 
-for docker_arch in amd64 arm32v6 arm64v8; do
+# Define architectures to build
+docker_archs=(amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x)
+
+for docker_arch in ${docker_archs[@]}; do
     case ${docker_arch} in
-        amd64   ) qemu_arch="x86_64" ;;
-        arm32v6 ) qemu_arch="arm" ;;
-        arm64v8 ) qemu_arch="aarch64" ;;    
+        i386 )    qemu_arch="i386"    ;;
+        amd64   ) qemu_arch="x86_64"  ;;
+        arm32v6 ) qemu_arch="armhf"     ;;
+        arm32v7 ) qemu_arch="armv7"     ;;
+        arm64v8 ) qemu_arch="aarch64" ;;
+        ppc64le ) qemu_arch="ppc64le" ;;
+        s390x )   qemu_arch="s390x"   ;;
     esac
     cp Dockerfile.cross Dockerfile.${docker_arch}
     sed -i "s|__BASEIMAGE_ARCH__|${docker_arch}|g" Dockerfile.${docker_arch}
