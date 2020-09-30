@@ -1,7 +1,8 @@
-language: bash
+language: shell
+dist: xenial
+os: linux
 services:
   - docker
-sudo: required
 addons:
   apt:
     packages:
