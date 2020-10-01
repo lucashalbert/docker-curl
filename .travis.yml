@@ -64,12 +64,12 @@ after_script:
   - docker images
 
 before_deploy:
-  - ./tag.sh
+  - ./travis-tag.sh
 
 deploy:
   provider: script
   script:
-    - ./deploy.sh
+    - ./travis-deploy.sh
   on:
     branch: master
 
