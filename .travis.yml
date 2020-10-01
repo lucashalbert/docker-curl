@@ -10,48 +10,49 @@ addons:
 
 jobs:
   include:
-  - stage: build_arm32v6
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=arm32v6
-      - qemu_arch=arm
-      - image_arch=arm
-  - stage: build_arm32v7
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=arm32v7
-      - qemu_arch=arm
-      - image_arch=arm
-  - stage: build_arm64v8
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=arm64v8
-      - qemu_arch=aarch64
-      - image_arch=arm64
-  - stage: build_i386
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=i386
-      - qemu_arch=i386
-      - image_arch=i386
-  - stage: build_amd64
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=amd64
-      - qemu_arch=x86_64
-      - image_arch=amd64
-  - stage: build_ppc64le
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=ppc64le
-      - qemu_arch=ppc64le
-      - image_arch=ppc64le
-  - stage: build_s390x
-    env:
-      - repo=lucashalbert/curl
-      - docker_arch=s390x
-      - qemu_arch=s390x
-      - image_arch=s390x
+    - name: build_arm32v6
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=arm32v6
+        - qemu_arch=arm
+        - image_arch=arm
+    - name: build_arm32v7
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=arm32v7
+        - qemu_arch=arm
+        - image_arch=arm
+    - name: build_arm64v8
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=arm64v8
+        - qemu_arch=aarch64
+        - image_arch=arm64
+    - name: build_i386
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=i386
+        - qemu_arch=i386
+        - image_arch=i386
+    - name: build_amd64
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=amd64
+        - qemu_arch=x86_64
+        - image_arch=amd64
+    - name: build_ppc64le
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=ppc64le
+        - qemu_arch=ppc64le
+        - image_arch=ppc64le
+    - name: build_s390x
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=s390x
+        - qemu_arch=s390x
+        - image_arch=s390x
+
 
 before_script:
   - docker run --rm --privileged multiarch/qemu-user-static:register
@@ -61,15 +62,17 @@ script:
   - ./travis.sh
 
 after_script:
-  - docker images
+  - docker run ${repo}:${docker_arch}-${ver} https://curl.haxx.se > /dev/null
+  - docker push ${repo}:${docker_arch}-${ver}
+  - DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
+  - DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
+  - DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
 
 before_deploy:
-  - ./travis-tag.sh
 
 deploy:
   provider: script
-  script:
-    - ./travis-deploy.sh
+  script: ./travis-deploy.sh
   on:
     branch: master
 
