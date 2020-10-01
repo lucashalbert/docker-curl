@@ -1,15 +1,79 @@
-language: bash
+language: shell
+dist: xenial
+os: linux
 services:
   - docker
-sudo: required
 addons:
   apt:
     packages:
       - docker-ce
+env:
+  - repo=lucashalbert/curl
+  - docker_archs=(amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x)
+jobs:
+  include:
+  - build_arm32v6:
+    env:
+      - docker_arch=arm32v6
+      - qemu_arch=arm
+      - image_arch=arm
+  - build_arm32v7:
+    env:
+      - docker_arch=arm32v7
+      - qemu_arch=arm
+      - image_arch=arm
+  - build_arm64v8:
+    env:
+      - docker_arch=arm64v8
+      - qemu_arch=aarch64
+      - image_arch=arm64
+  - build_i386:
+    env:
+      - docker_arch=i386
+      - qemu_arch=i386
+      - image_arch=i386
+  - build_amd64:
+    env:
+      - docker_arch=amd64
+      - qemu_arch=x86_64
+      - image_arch=amd64
+  - build_ppc64le:
+    env:
+      - docker_arch=ppc64le
+      - qemu_arch=ppc64le
+      - image_arch=ppc64le
+  - build_s390x:
+    env:
+      - docker_arch=s390x
+      - qemu_arch=s390x
+      - image_arch=s390x
+
+before_script:
+  - export ver=${ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
+
 script:
   - ./travis.sh
-after_success:
+
+after_script:
   - docker images
+
+before_deploy:
+  - ./tag.sh
+
+deploy:
+  provider: script
+  script:
+    - ./deploy.sh
+  on:
+    branch: master
+
+
+after_deploy:
+
+
+after_success:
+  -
+
 branches:
   only:
     - master

@@ -28,7 +28,7 @@ echo "${DH_PASSWORD}" | docker login --username $DH_USERNAME --password-stdin
 docker run --rm --privileged multiarch/qemu-user-static:register
 
 # Run the build
-./build.sh
+./travis-build.sh
 
 # Get start time
 END_TIME=$(date +"%Y%m%dT%H%M")
