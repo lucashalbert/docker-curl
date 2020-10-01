@@ -10,43 +10,43 @@ addons:
 
 jobs:
   include:
-  - build_arm32v6:
+  - stage: build_arm32v6
     env:
       - repo=lucashalbert/curl
       - docker_arch=arm32v6
       - qemu_arch=arm
       - image_arch=arm
-  - build_arm32v7:
+  - stage: build_arm32v7
     env:
       - repo=lucashalbert/curl
       - docker_arch=arm32v7
       - qemu_arch=arm
       - image_arch=arm
-  - build_arm64v8:
+  - stage: build_arm64v8
     env:
       - repo=lucashalbert/curl
       - docker_arch=arm64v8
       - qemu_arch=aarch64
       - image_arch=arm64
-  - build_i386:
+  - stage: build_i386
     env:
       - repo=lucashalbert/curl
       - docker_arch=i386
       - qemu_arch=i386
       - image_arch=i386
-  - build_amd64:
+  - stage: build_amd64
     env:
       - repo=lucashalbert/curl
       - docker_arch=amd64
       - qemu_arch=x86_64
       - image_arch=amd64
-  - build_ppc64le:
+  - stage: build_ppc64le
     env:
       - repo=lucashalbert/curl
       - docker_arch=ppc64le
       - qemu_arch=ppc64le
       - image_arch=ppc64le
-  - build_s390x:
+  - stage: build_s390x
     env:
       - repo=lucashalbert/curl
       - docker_arch=s390x
