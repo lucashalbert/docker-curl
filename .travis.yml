@@ -9,7 +9,6 @@ addons:
       - docker-ce
 env:
   - repo=lucashalbert/curl
-  - docker_archs=(amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x)
 jobs:
   include:
   - build_arm32v6:
