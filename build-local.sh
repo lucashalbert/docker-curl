@@ -2,6 +2,9 @@
 curl_ver=${curl_ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
 build_date=${build_date:-$(date +"%Y%m%dT%H%M%S")}
 
+# Register QEMU virtualization extensions
+sudo docker run --rm --privileged multiarch/qemu-user-static:register
+
 # Define architectures to build
 docker_archs=(amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x)
 
