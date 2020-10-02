@@ -11,6 +11,7 @@ addons:
 
 jobs:
   include:
+    - stage: Build
     - name: build arm32v6
       env:
         - repo=lucashalbert/curl
@@ -53,10 +54,53 @@ jobs:
         - docker_arch=s390x
         - qemu_arch=s390x
         - image_arch=s390x
-    - stage: Docker Manifest
+    - stage: Test
+    - name: test arm64v8
+      arch: arm64
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=arm64v8
+        - qemu_arch=aarch64
+        - image_arch=arm64
+      script: docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
+    - name: test i386
+      arch: amd64
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=i386
+        - qemu_arch=i386
+        - image_arch=i386
+      script: docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
+    - name: test amd64
+      arch: amd64
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=amd64
+        - qemu_arch=x86_64
+        - image_arch=amd64
+      script: docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
+    - name: test ppc64le
+      arch: ppc64le
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=ppc64le
+        - qemu_arch=ppc64le
+        - image_arch=ppc64le
+      script: docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
+    - name: test s390x
+      arch: s390x
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=s390x
+        - qemu_arch=s390x
+        - image_arch=s390x
+      script: docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
+    - stage: Manifest
+    - name: create and annotate manifests
       script: ./travis-manifest.sh
       env:
         - repo=lucashalbert/curl
+        - docker_archs="amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x"
       if: branch = master
 
 before_script:
