@@ -73,7 +73,7 @@ after_script:
   - docker images
 
 before_deploy:
-  - docker run -rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
+  - docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
 
 deploy:
   provider: script
@@ -89,7 +89,7 @@ after_deploy:
 
 after_success:
   - echo "Build successful"
-  
+
 branches:
   only:
     - master
