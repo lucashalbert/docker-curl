@@ -1,8 +1,8 @@
 #!/bin/bash
 
-docker_archs=(amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x)
+set -x
 
-for docker_arch in ${docker_archs[@]}; do
+for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
         i386 )    image_arch="i386"    ;;
         amd64   ) image_arch="amd64"   ;;
@@ -24,7 +24,7 @@ DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${manifest
 # Create latest docker manifest
 DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${manifest_images}
 
-for docker_arch in ${docker_archs[@]}; do
+for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
         i386 )    image_arch="i386"    ;;
         amd64   ) image_arch="amd64"   ;;
