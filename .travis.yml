@@ -8,45 +8,46 @@ addons:
     packages:
       - docker-ce
 
+
 jobs:
   include:
-    - name: build_arm32v6
+    - name: build arm32v6
       env:
         - repo=lucashalbert/curl
         - docker_arch=arm32v6
         - qemu_arch=arm
         - image_arch=arm
-    - name: build_arm32v7
+    - name: build arm32v7
       env:
         - repo=lucashalbert/curl
         - docker_arch=arm32v7
         - qemu_arch=arm
         - image_arch=arm
-    - name: build_arm64v8
+    - name: build arm64v8
       env:
         - repo=lucashalbert/curl
         - docker_arch=arm64v8
         - qemu_arch=aarch64
         - image_arch=arm64
-    - name: build_i386
+    - name: build i386
       env:
         - repo=lucashalbert/curl
         - docker_arch=i386
         - qemu_arch=i386
         - image_arch=i386
-    - name: build_amd64
+    - name: build amd64
       env:
         - repo=lucashalbert/curl
         - docker_arch=amd64
         - qemu_arch=x86_64
         - image_arch=amd64
-    - name: build_ppc64le
+    - name: build ppc64le
       env:
         - repo=lucashalbert/curl
         - docker_arch=ppc64le
         - qemu_arch=ppc64le
         - image_arch=ppc64le
-    - name: build_s390x
+    - name: build s390x
       env:
         - repo=lucashalbert/curl
         - docker_arch=s390x
@@ -55,6 +56,9 @@ jobs:
 
 
 before_script:
+#  - START_TIME=$(date +"%Y%m%dT%H%M%S")
+#  - echo "Start Time: ${START_TIME}"
+#  - export build_date=${START_TIME}
   - docker run --rm --privileged multiarch/qemu-user-static:register
   - export ver=${ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
 
@@ -62,13 +66,14 @@ script:
   - ./travis.sh
 
 after_script:
-  - docker run ${repo}:${docker_arch}-${ver} https://curl.haxx.se > /dev/null
-  - docker push ${repo}:${docker_arch}-${ver}
-  - DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
-  - DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
-  - DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
+#  - END_TIME=$(date +"%Y%m%dT%H%M")
+#  - echo "Build Start Time: ${START_TIME}"
+#  - echo "Build End Time: ${END_TIME}"
+#  - echo "Build Duration: $(($SECONDS / 60)) minutes $((${SECONDS} % 60)) seconds"
+  - docker images
 
 before_deploy:
+  - docker run -rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
 
 deploy:
   provider: script
@@ -78,10 +83,13 @@ deploy:
 
 
 after_deploy:
+  - ./travis-manifest.sh
+
 
 
 after_success:
-
+  - echo "Build successful"
+  
 branches:
   only:
     - master

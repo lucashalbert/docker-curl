@@ -20,9 +20,5 @@ if [[ ! -f qemu-${qemu_arch}-static ]]; then
     rm x86_64_qemu-${qemu_arch}-static.tar.gz
 fi
 
-# Build
-if [ "$EUID" -ne 0 ]; then
-    sudo docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
-else
-    docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
-fi
+# Build image
+docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
