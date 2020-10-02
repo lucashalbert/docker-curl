@@ -13,6 +13,8 @@ for docker_arch in ${docker_archs}; do
         s390x )   image_arch="s390x"   ;;   
     esac
 
+    docker pull ${repo}:${docker_arch}-${ver}
+
     # Generate Dynamic Manifest Image List
     manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
 done
