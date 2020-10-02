@@ -7,7 +7,6 @@ for docker_arch in ${docker_archs}; do
         i386 )    image_arch="386"     ;;
         amd64   ) image_arch="amd64"   ;;
         arm32v6 ) image_arch="arm32v6" ;;
-        arm32v8 ) image_arch="arm32v8" ;;
         arm32v7 ) image_arch="arm32v7" ;;
         arm64v8 ) image_arch="arm64"   ;;
         ppc64le ) image_arch="ppc64le" ;;
@@ -33,7 +32,6 @@ for docker_arch in ${docker_archs}; do
         amd64   ) image_arch="amd64"   ;;
         arm32v6 ) image_arch="arm32v6" varient="v6";;
         arm32v7 ) image_arch="arm32v7" varient="v7";;
-        arm32v8 ) image_arch="arm32v8" varient="v8";;
         arm64v8 ) image_arch="arm64"   varient="v8";;
         ppc64le ) image_arch="ppc64le" ;;
         s390x )   image_arch="s390x"   ;;   

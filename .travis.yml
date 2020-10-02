@@ -29,14 +29,6 @@ jobs:
         - image_arch=arm
         - varient=v7
         - DEPLOY_BRANCH=build-architectures
-    - name: build arm32v8
-      env:
-        - repo=lucashalbert/curl
-        - docker_arch=arm32v8
-        - qemu_arch=arm
-        - image_arch=arm
-        - varient=v8
-        - DEPLOY_BRANCH=build-architectures
     - name: build arm64v8
       env:
         - repo=lucashalbert/curl
