@@ -12,7 +12,7 @@ addons:
 jobs:
   include:
     - stage: Build
-      script: echo "Entering Build Stage"
+      script: skip
     - name: build arm32v6
       env:
         - repo=lucashalbert/curl
@@ -56,7 +56,7 @@ jobs:
         - qemu_arch=s390x
         - image_arch=s390x
     - stage: Test
-      script: echo "Entering Test Stage"
+      script: skip
     - name: test arm64v8
       arch: arm64
       env:
@@ -98,7 +98,7 @@ jobs:
         - image_arch=s390x
       script: docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
     - stage: Manifest
-      script: echo "Entering Manifest Stage"
+      script: skip
     - name: create and annotate manifests
       script: ./travis-manifest.sh
       env:
@@ -123,6 +123,7 @@ deploy:
   script: ./travis-deploy.sh
   on:
     branch: master
+    condition: $repo = lucashalbert/curl
 
 after_deploy:
 
