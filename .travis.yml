@@ -53,27 +53,23 @@ jobs:
         - docker_arch=s390x
         - qemu_arch=s390x
         - image_arch=s390x
-
+    - stage: Docker Manifest
+      script: ./travis-manifest.sh
+      env:
+        - repo=lucashalbert/curl
+      if: branch = master
 
 before_script:
-#  - START_TIME=$(date +"%Y%m%dT%H%M%S")
-#  - echo "Start Time: ${START_TIME}"
-#  - export build_date=${START_TIME}
   - docker run --rm --privileged multiarch/qemu-user-static:register
   - export ver=${ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
 
 script:
   - ./travis.sh
 
-after_script:
-#  - END_TIME=$(date +"%Y%m%dT%H%M")
-#  - echo "Build Start Time: ${START_TIME}"
-#  - echo "Build End Time: ${END_TIME}"
-#  - echo "Build Duration: $(($SECONDS / 60)) minutes $((${SECONDS} % 60)) seconds"
-  - docker images
+after_success:
+  - echo "Build successful"
 
 before_deploy:
-#  - docker run --rm ${repo}:${docker_arch}-${ver} https://httpbin.org/user-agent
 
 deploy:
   provider: script
@@ -81,14 +77,10 @@ deploy:
   on:
     branch: master
 
-
 after_deploy:
-  - ./travis-manifest.sh
 
-
-
-after_success:
-  - echo "Build successful"
+after_script:
+  - docker images
 
 branches:
   only:
