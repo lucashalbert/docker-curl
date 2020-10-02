@@ -22,3 +22,26 @@ fi
 
 # Build image
 docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
+
+
+# Check if build should be deployed
+if [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then 
+    # Push image to Docker Hub
+    docker push ${repo}:${docker_arch}-${ver}
+
+    # Create arch/ver docker manifest
+    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
+
+    # Annotate arch/ver docker manifest
+    if [ ! -Z ${varient} ]; then
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --varient ${varient}
+    else
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
+    fi
+
+    # Push version and architecture docker manifest
+    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
+else
+    echo "INFO: Current build of branch \"$TRAVIS_BRANCH\" is not scoped to be deployed."
+    exit 0
+fi

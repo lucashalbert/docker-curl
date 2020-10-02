@@ -19,42 +19,60 @@ jobs:
         - docker_arch=arm32v6
         - qemu_arch=arm
         - image_arch=arm
+        - varient=v6
+        - DEPLOY_BRANCH=build-architectures
     - name: build arm32v7
       env:
         - repo=lucashalbert/curl
         - docker_arch=arm32v7
         - qemu_arch=arm
         - image_arch=arm
+        - varient=v7
+        - DEPLOY_BRANCH=build-architectures
+    - name: build arm32v8
+      env:
+        - repo=lucashalbert/curl
+        - docker_arch=arm32v8
+        - qemu_arch=arm
+        - image_arch=arm
+        - varient=v8
+        - DEPLOY_BRANCH=build-architectures
     - name: build arm64v8
       env:
         - repo=lucashalbert/curl
         - docker_arch=arm64v8
         - qemu_arch=aarch64
         - image_arch=arm64
+        - varient=v8
+        - DEPLOY_BRANCH=build-architectures
     - name: build i386
       env:
         - repo=lucashalbert/curl
         - docker_arch=i386
         - qemu_arch=i386
-        - image_arch=i386
+        - image_arch=386
+        - DEPLOY_BRANCH=build-architectures
     - name: build amd64
       env:
         - repo=lucashalbert/curl
         - docker_arch=amd64
         - qemu_arch=x86_64
         - image_arch=amd64
+        - DEPLOY_BRANCH=build-architectures
     - name: build ppc64le
       env:
         - repo=lucashalbert/curl
         - docker_arch=ppc64le
         - qemu_arch=ppc64le
         - image_arch=ppc64le
+        - DEPLOY_BRANCH=build-architectures
     - name: build s390x
       env:
         - repo=lucashalbert/curl
         - docker_arch=s390x
         - qemu_arch=s390x
         - image_arch=s390x
+        - DEPLOY_BRANCH=build-architectures
 #    - stage: Test
 #      script: skip
 #    - name: test arm64v8
@@ -103,7 +121,7 @@ jobs:
       script: ./travis-manifest.sh
       env:
         - repo=lucashalbert/curl
-        - docker_archs="amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x"
+        - docker_archs="amd64 i386 arm32v6 arm32v7 arm32v8 arm64v8 ppc64le s390x"
       if: branch = master
 
 before_script:
@@ -116,16 +134,16 @@ script:
 after_success:
   - echo "Build successful"
 
-before_deploy:
+#before_deploy:
 
-deploy:
-  provider: script
-  script: ./travis-deploy.sh
-  on:
-    branch: master
-    condition: $repo = lucashalbert/curl
+#deploy:
+#  provider: script
+#  script: ./travis-deploy.sh
+#  on:
+#    branch: master
+#    condition: $repo = lucashalbert/curl
 
-after_deploy:
+#after_deploy:
 
 after_script:
   - docker images
