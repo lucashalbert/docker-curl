@@ -19,7 +19,7 @@ jobs:
         - docker_arch=arm32v6
         - qemu_arch=arm
         - image_arch=arm
-        - varient=v6
+        - variant=v6
         - DEPLOY_BRANCH=build-architectures
     - name: build arm32v7
       env:
@@ -27,7 +27,7 @@ jobs:
         - docker_arch=arm32v7
         - qemu_arch=arm
         - image_arch=arm
-        - varient=v7
+        - variant=v7
         - DEPLOY_BRANCH=build-architectures
     - name: build arm64v8
       env:
@@ -35,7 +35,7 @@ jobs:
         - docker_arch=arm64v8
         - qemu_arch=aarch64
         - image_arch=arm64
-        - varient=v8
+        - variant=v8
         - DEPLOY_BRANCH=build-architectures
     - name: build i386
       env:
@@ -113,7 +113,7 @@ jobs:
       script: ./travis-manifest.sh
       env:
         - repo=lucashalbert/curl
-        - docker_archs="amd64 i386 arm32v6 arm32v7 arm32v8 arm64v8 ppc64le s390x"
+        - docker_archs="amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x"
       if: branch = master
 
 before_script:

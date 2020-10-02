@@ -33,8 +33,8 @@ if [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
 
     # Annotate arch/ver docker manifest
-    if [ ! -z ${varient} ]; then
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --varient ${varient}
+    if [ ! -z ${variant} ]; then
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
     else
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
     fi

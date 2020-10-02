@@ -30,21 +30,21 @@ for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
         i386 )    image_arch="386"     ;;
         amd64   ) image_arch="amd64"   ;;
-        arm32v6 ) image_arch="arm32v6" varient="v6";;
-        arm32v7 ) image_arch="arm32v7" varient="v7";;
-        arm64v8 ) image_arch="arm64"   varient="v8";;
+        arm32v6 ) image_arch="arm32v6" variant="v6";;
+        arm32v7 ) image_arch="arm32v7" variant="v7";;
+        arm64v8 ) image_arch="arm64"   variant="v8";;
         ppc64le ) image_arch="ppc64le" ;;
         s390x )   image_arch="s390x"   ;;   
     esac
 
 
 # Annotate arch/ver docker manifest
-    if [ ! -Z ${varient} ]; then
+    if [ ! -Z ${variant} ]; then
         # Annotate version specific docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --varient ${varient}
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
 
         # Annotate latest docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --varient ${varient}
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
 
     else
         # Annotate version specific docker manifest
