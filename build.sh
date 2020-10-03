@@ -57,7 +57,7 @@ DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${manifest
 # Create latest version docker manifest
 DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${manifest_images}
 
-for docker_arch in amd64 arm32v6 arm64v8; do
+for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
         i386    ) qemu_arch="i386"    image_arch="386"     ;;
         amd64   ) qemu_arch="x86_64"  image_arch="amd64"   ;;
