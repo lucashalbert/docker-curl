@@ -39,7 +39,7 @@ for docker_arch in ${docker_archs}; do
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
         
         # Annotate arch/ver docker manifest
-        if [ ! -z ${variant} ]; then
+        if [ ! -z "${variant}" ]; then
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
         else
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
@@ -61,7 +61,7 @@ for docker_arch in ${docker_archs}; do
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
         
         # Annotate tagged arch/ver docker manifest
-        if [ ! -z ${variant} ]; then
+        if [ ! -z "${variant}" ]; then
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch} --variant ${variant}
         else
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
@@ -74,7 +74,7 @@ for docker_arch in ${docker_archs}; do
     fi
   
     # Generate Dynamic Manifest Image List
-    if [ -z ${manifest_images} ]; then
+    if [ -z "${manifest_images}" ]; then
         manifest_images="${repo}:${docker_arch}-${ver}"
     else
         manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
@@ -112,7 +112,7 @@ for docker_arch in ${docker_archs}; do
     # Check if build should be deployed
     if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
         # Annotate arch/ver docker manifest
-        if [ ! -z ${variant} ]; then
+        if [ ! -z "${variant}" ]; then
             # Annotate version specific docker manifest
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
 
@@ -128,7 +128,7 @@ for docker_arch in ${docker_archs}; do
         fi
     elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
         # Annotate arch/ver docker manifest
-        if [ ! -z ${variant} ]; then
+        if [ ! -z "${variant}" ]; then
             # Annotate version specific docker manifest
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch} --variant ${variant}
 
