@@ -50,6 +50,13 @@ for docker_arch in ${docker_archs}; do
 
         # Push arch/ver docker manifest
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
+
+        # Generate Dynamic Manifest Image List
+        if [ -z "${manifest_images}" ]; then
+            manifest_images="${repo}:${docker_arch}-${ver}"
+        else
+            manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
+        fi
     elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
         # Tag image with travis branch
         docker tag ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
@@ -69,15 +76,15 @@ for docker_arch in ${docker_archs}; do
 
         # Push tagged arch/ver docker manifest
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
+
+        # Generate Dynamic Manifest Image List
+        if [ -z "${manifest_images}" ]; then
+            manifest_images="${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
+        else
+            manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
+        fi
     else
         echo "Skipping image deployment... Not configured to deploy images/manifests to DockerHub"
-    fi
-  
-    # Generate Dynamic Manifest Image List
-    if [ -z "${manifest_images}" ]; then
-        manifest_images="${repo}:${docker_arch}-${ver}"
-    else
-        manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
     fi
 done
 
