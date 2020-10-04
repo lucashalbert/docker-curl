@@ -1,13 +1,13 @@
 #!/bin/bash
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
-        i386    ) qemu_arch="i386"    image_arch="386"     ;;
-        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   ;;
-        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6";;
-        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7";;
-        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8";;
-        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" ;;
-        s390x   ) qemu_arch="s390x"   image_arch="s390x"   ;;
+        i386    ) qemu_arch="i386"    image_arch="386"     unset variant ;;
+        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   unset variant ;;
+        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6"  ;;
+        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7"  ;;
+        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8"  ;;
+        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" unset variant ;;
+        s390x   ) qemu_arch="s390x"   image_arch="s390x"   unset variant ;;
     esac
     cp Dockerfile.cross Dockerfile.${docker_arch}
     sed -i "s|__BASEIMAGE_ARCH__|${docker_arch}|g" Dockerfile.${docker_arch}
@@ -88,6 +88,8 @@ for docker_arch in ${docker_archs}; do
     fi
 done
 
+echo $manifest_images
+
 # Check if build should be deployed
 if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
     # Create version specific docker manifest
@@ -107,13 +109,13 @@ fi
 
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
-        i386    ) qemu_arch="i386"    image_arch="386"     ;;
-        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   ;;
-        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6" ;;
-        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7" ;;
-        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8" ;;
-        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" ;;
-        s390x   ) qemu_arch="s390x"   image_arch="s390x"   ;;    
+        i386    ) qemu_arch="i386"    image_arch="386"     unset variant ;;
+        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   unset variant ;;
+        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6"  ;;
+        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7"  ;;
+        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8"  ;;
+        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" unset variant ;;
+        s390x   ) qemu_arch="s390x"   image_arch="s390x"   unset variant ;;
     esac
 
     # Check if build should be deployed
