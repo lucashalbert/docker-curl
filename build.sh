@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -x
+
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
         i386    ) qemu_arch="i386"    image_arch="386"     unset variant ;;
@@ -88,7 +91,7 @@ for docker_arch in ${docker_archs}; do
     fi
 done
 
-echo $manifest_images
+echo "Manifest Images: $manifest_images"
 
 # Check if build should be deployed
 if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
