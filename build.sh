@@ -24,7 +24,6 @@ for docker_arch in ${docker_archs}; do
         sed -i "s/__CROSS__//g" Dockerfile.${docker_arch}
     fi
 
-
     # Check for qemu static bins
     if [[ ! -f qemu-${qemu_arch}-static ]]; then
         echo "Downloading the qemu static binaries for ${docker_arch}"
@@ -33,11 +32,11 @@ for docker_arch in ${docker_archs}; do
         rm x86_64_qemu-${qemu_arch}-static.tar.gz
     fi
 
-    # Build image
-    docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
-   
     # Check if build should be deployed
-    if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then  
+    if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+        # Build image
+        docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
+
         # Create arch/ver docker manifest
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
         
@@ -61,8 +60,8 @@ for docker_arch in ${docker_archs}; do
             manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
         fi
     elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
-        # Tag image with travis branch
-        docker tag ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
+        # Build image
+        docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} .
 
         # Push tagged image
         docker push ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
@@ -87,6 +86,8 @@ for docker_arch in ${docker_archs}; do
             manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
         fi
     else
+        # Build image
+        docker build -f Dockerfile.${docker_arch} .
         echo "Skipping image deployment... Not configured to deploy images/manifests to DockerHub"
     fi
 done
