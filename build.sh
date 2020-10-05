@@ -37,7 +37,7 @@ for docker_arch in ${docker_archs}; do
     docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
    
     # Check if build should be deployed
-    if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then  
+    if [ "$TRAVIS_BRANCH" = "master" ]; then  
         # Create arch/ver docker manifest
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}
         
@@ -60,7 +60,7 @@ for docker_arch in ${docker_archs}; do
         else
             manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
         fi
-    elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+    elif [ "$DEPLOY" = true ]; then
         # Tag image with travis branch
         docker tag ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
 
@@ -94,13 +94,13 @@ done
 echo "Manifest Images: $manifest_images"
 
 # Check if build should be deployed
-if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
+if [ "$TRAVIS_BRANCH" = "master" ]; then 
     # Create version specific docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${manifest_images}
 
     # Create latest version docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${manifest_images}
-elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+elif [ "$DEPLOY" = true ]; then
     # Create version specific docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver}-${TRAVIS_BRANCH} ${manifest_images}
 
@@ -122,7 +122,7 @@ for docker_arch in ${docker_archs}; do
     esac
 
     # Check if build should be deployed
-    if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
+    if [ "$TRAVIS_BRANCH" = "master" ]; then 
         # Annotate arch/ver docker manifest
         if [ ! -z "${variant}" ]; then
             # Annotate version specific docker manifest
@@ -138,7 +138,7 @@ for docker_arch in ${docker_archs}; do
             # Annotate latest docker manifest
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
         fi
-    elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+    elif [ "$DEPLOY" = true ]; then
         # Annotate arch/ver docker manifest
         if [ ! -z "${variant}" ]; then
             # Annotate version specific docker manifest
@@ -160,13 +160,13 @@ for docker_arch in ${docker_archs}; do
 done
 
 # Check if build should be deployed
-if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+if [ "$TRAVIS_BRANCH" = "master" ]; then
     # Push version specific docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${ver}
 
     # Push latest docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:latest
-elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+elif [ "$DEPLOY" = true ]; then
     # Push version specific docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${ver}-${TRAVIS_BRANCH}
 
