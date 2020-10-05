@@ -54,12 +54,12 @@ for docker_arch in ${docker_archs}; do
         # Push arch/ver docker manifest
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
 
-#        # Generate Dynamic Manifest Image List
-#        if [ -z "${manifest_images}" ]; then
-#            manifest_images="${repo}:${docker_arch}-${ver}"
-#        else
-#            manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
-#        fi
+        # Generate Dynamic Manifest Image List
+        if [ -z "${manifest_images}" ]; then
+            manifest_images="${repo}:${docker_arch}-${ver}"
+        else
+            manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
+        fi
     elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
         # Tag image with travis branch
         docker tag ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
@@ -80,21 +80,14 @@ for docker_arch in ${docker_archs}; do
         # Push tagged arch/ver docker manifest
         DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
 
-#        # Generate Dynamic Manifest Image List
-#        if [ -z "${manifest_images}" ]; then
-#            manifest_images="${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
-#        else
-#            manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
-#        fi
+        # Generate Dynamic Manifest Image List
+        if [ -z "${manifest_images}" ]; then
+            manifest_images="${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
+        else
+            manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
+        fi
     else
         echo "Skipping image deployment... Not configured to deploy images/manifests to DockerHub"
-    fi
-
-    # Generate Dynamic Manifest Image List
-    if [ -z "${manifest_images}" ]; then
-        manifest_images="${repo}:${docker_arch}-${ver}"
-    else
-        manifest_images="${manifest_images} ${repo}:${docker_arch}-${ver}"
     fi
 done
 
@@ -128,58 +121,42 @@ for docker_arch in ${docker_archs}; do
         s390x   ) qemu_arch="s390x"   image_arch="s390x"   variant=""   ;;
     esac
 
+    # Check if build should be deployed
+    if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
+        # Annotate arch/ver docker manifest
+        if [ ! -z "${variant}" ]; then
+            # Annotate version specific docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
 
-     if [ ! -z "${variant}" ]; then
-        # Annotate version specific docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
+            # Annotate latest docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
 
-        # Annotate latest docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
+        else
+            # Annotate version specific docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
 
+            # Annotate latest docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
+        fi
+    elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
+        # Annotate arch/ver docker manifest
+        if [ ! -z "${variant}" ]; then
+            # Annotate version specific docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch} --variant ${variant}
+
+            # Annotate latest docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch} --variant ${variant}
+
+        else
+            # Annotate version specific docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
+
+            # Annotate latest docker manifest
+            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
+        fi
     else
-        # Annotate version specific docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
-
-        # Annotate latest docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
+        echo "Skipping version specific and latest tag docker manifest annotation... Not configured to deploy images/manifests to DockerHub"
     fi
-
-#    # Check if build should be deployed
-#    if [ "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then 
-#        # Annotate arch/ver docker manifest
-#        if [ ! -z "${variant}" ]; then
-#            # Annotate version specific docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
-#
-#            # Annotate latest docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch} --variant ${variant}
-#
-#        else
-#            # Annotate version specific docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
-#
-#            # Annotate latest docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
-#        fi
-#    elif [ ! "$TRAVIS_BRANCH" = "master" ] && [ "$DEPLOY" = true ]; then
-#        # Annotate arch/ver docker manifest
-#        if [ ! -z "${variant}" ]; then
-#            # Annotate version specific docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch} --variant ${variant}
-#
-#            # Annotate latest docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch} --variant ${variant}
-#
-#        else
-#            # Annotate version specific docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
-#
-#            # Annotate latest docker manifest
-#            DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
-#        fi
-#    else
-#        echo "Skipping version specific and latest tag docker manifest annotation... Not configured to deploy images/manifests to DockerHub"
-#    fi
 done
 
 # Check if build should be deployed
