@@ -4,13 +4,13 @@ set -x
 
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
-        i386    ) qemu_arch="i386"    image_arch="386"     variant="" ;;
-        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   variant="" ;;
-        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6"  ;;
-        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7"  ;;
-        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8"  ;;
-        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" variant="" ;;
-        s390x   ) qemu_arch="s390x"   image_arch="s390x"   variant="" ;;
+        i386    ) qemu_arch="i386"    image_arch="386"     variant=""   ;;
+        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   variant=""   ;;
+        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6" ;;
+        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7" ;;
+        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8" ;;
+        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" variant=""   ;;
+        s390x   ) qemu_arch="s390x"   image_arch="s390x"   variant=""   ;;
     esac
     cp Dockerfile.cross Dockerfile.${docker_arch}
     sed -i "s|__BASEIMAGE_ARCH__|${docker_arch}|g" Dockerfile.${docker_arch}
@@ -112,13 +112,13 @@ fi
 
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
-        i386    ) qemu_arch="i386"    image_arch="386"     unset variant ;;
-        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   unset variant ;;
-        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6"  ;;
-        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7"  ;;
-        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8"  ;;
-        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" unset variant ;;
-        s390x   ) qemu_arch="s390x"   image_arch="s390x"   unset variant ;;
+        i386    ) qemu_arch="i386"    image_arch="386"     variant=""   ;;
+        amd64   ) qemu_arch="x86_64"  image_arch="amd64"   variant=""   ;;
+        arm32v6 ) qemu_arch="arm"     image_arch="arm"     variant="v6" ;;
+        arm32v7 ) qemu_arch="arm"     image_arch="arm"     variant="v7" ;;
+        arm64v8 ) qemu_arch="aarch64" image_arch="arm64"   variant="v8" ;;
+        ppc64le ) qemu_arch="ppc64le" image_arch="ppc64le" variant=""   ;;
+        s390x   ) qemu_arch="s390x"   image_arch="s390x"   variant=""   ;;
     esac
 
     # Check if build should be deployed
