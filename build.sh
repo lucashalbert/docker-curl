@@ -49,9 +49,6 @@ for docker_arch in ${docker_archs}; do
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver} ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
         fi
 
-        # Push arch/ver docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
-
         # Generate Dynamic Manifest Image List
         if [ -z "${manifest_images}" ]; then
             manifest_images="${repo}:${docker_arch}-${ver}"
@@ -75,9 +72,6 @@ for docker_arch in ${docker_archs}; do
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
         fi
 
-        # Push tagged arch/ver docker manifest
-        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
-
         # Generate Dynamic Manifest Image List
         if [ -z "${manifest_images}" ]; then
             manifest_images="${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}"
@@ -89,29 +83,21 @@ for docker_arch in ${docker_archs}; do
     fi
 done
 
-echo "Manifest Images: $manifest_images"
-
 # Check if build should be deployed
 if [ "$TRAVIS_BRANCH" = "master" ]; then 
     # Create version specific docker manifest
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${manifest_images}
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
-    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
+    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${manifest_images}
 
     # Create latest version docker manifest
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${manifest_images}
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
-    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
+    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest ${manifest_images}
+
 elif [ "$DEPLOY" = true ]; then
     # Create version specific docker manifest
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver}-${TRAVIS_BRANCH} ${manifest_images}
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
-    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver}-${TRAVIS_BRANCH} ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
+    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver}-${TRAVIS_BRANCH} ${manifest_images}
 
     # Create latest version docker manifest
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest-${TRAVIS_BRANCH} ${manifest_images}
-    echo DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest-${TRAVIS_BRANCH} ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
-    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest-${TRAVIS_BRANCH} ${repo}:amd64-${ver}-${TRAVIS_BRANCH} ${repo}:i386-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v6-${ver}-${TRAVIS_BRANCH} ${repo}:arm32v7-${ver}-${TRAVIS_BRANCH} ${repo}:arm64v8-${ver}-${TRAVIS_BRANCH} ${repo}:ppc64le-${ver}-${TRAVIS_BRANCH} ${repo}:s390x-${ver}-${TRAVIS_BRANCH}
+    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:latest-${TRAVIS_BRANCH} ${manifest_images}
+
 else
     echo "Skipping version specific and latest tag docker manifest creation... Not configured to deploy images/manifests to DockerHub"
 fi
@@ -144,6 +130,9 @@ for docker_arch in ${docker_archs}; do
             # Annotate latest docker manifest
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest ${repo}:${docker_arch}-${ver} --os linux --arch ${image_arch}
         fi
+
+        # Push arch/ver docker manifest
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}
     elif [ "$DEPLOY" = true ]; then
         # Annotate arch/ver docker manifest
         if [ ! -z "${variant}" ]; then
@@ -160,6 +149,9 @@ for docker_arch in ${docker_archs}; do
             # Annotate latest docker manifest
             DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate ${repo}:latest-${TRAVIS_BRANCH} ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH} --os linux --arch ${image_arch}
         fi
+
+        # Push tagged arch/ver docker manifest
+        DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${docker_arch}-${ver}-${TRAVIS_BRANCH}
     else
         echo "Skipping version specific and latest tag docker manifest annotation... Not configured to deploy images/manifests to DockerHub"
     fi
