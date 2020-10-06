@@ -1,16 +1,32 @@
 language: shell
+
 dist: xenial
+
 os: linux
+
 services:
   - docker
+
 addons:
   apt:
     packages:
       - docker-ce
+
+env:
+  - DEPLOY=false repo=lucashalbert/curl docker_archs="amd64 i386 arm32v6 arm32v7 arm64v8 ppc64le s390x"
+
+install:
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+before_script:
+  - export ver=$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")
+
 script:
   - ./travis.sh
+
 after_success:
   - docker images
+
 branches:
   only:
     - master
