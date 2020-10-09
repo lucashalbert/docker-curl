@@ -15,6 +15,7 @@ for docker_arch in ${docker_archs}; do
     sed -i "s|__QEMU_ARCH__|${qemu_arch}|g" Dockerfile.${docker_arch}
     sed -i "s|__CURL_VER__|${ver}|g" Dockerfile.${docker_arch}
     sed -i "s|__BUILD_DATE__|${build_date}|g" Dockerfile.${docker_arch}
+    sed -i "s|__VCS_REF__|${vcs_ref}|g" Dockerfile.${docker_arch}
     if [ ${docker_arch} == 'amd64' ]; then
         sed -i "/__CROSS__/d" Dockerfile.${docker_arch}
         cp Dockerfile.${docker_arch} Dockerfile

@@ -2,10 +2,10 @@ FROM __BASEIMAGE_ARCH__/alpine
 
 ENV CURL_VER=__CURL_VER__ \
     BUILD_DATE=__BUILD_DATE__ \
+    VCS_REF=__VCS_REF__ \
     __CROSS__QEMU_ARCH=__QEMU_ARCH__ \
     PARAMS=""
 
-ARG VCS_REF
 LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
       org.label-schema.build-date=${BUILD_DATE} \
       org.label-schema.name="lucashalbert/curl" \

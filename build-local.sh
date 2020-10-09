@@ -1,7 +1,7 @@
 #!/bin/bash
 ver=${ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
 build_date=${build_date:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
-VCS_REF=${VCS_REF:-$(git rev-parse --short HEAD)}
+vcs_ref=${vcs_ref:-$(git rev-parse --short HEAD)}
 
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
@@ -18,6 +18,7 @@ for docker_arch in ${docker_archs}; do
     sed -i "s|__QEMU_ARCH__|${qemu_arch}|g" Dockerfile.${docker_arch}
     sed -i "s|__CURL_VER__|${ver}|g" Dockerfile.${docker_arch}
     sed -i "s|__BUILD_DATE__|${build_date}|g" Dockerfile.${docker_arch}
+    sed -i "s|__VCS_REF__|${vcs_ref}|g" Dockerfile.${docker_arch}
     if [ ${docker_arch} == 'amd64' ]; then
         sed -i "/__CROSS__/d" Dockerfile.${docker_arch}
         cp Dockerfile.${docker_arch} Dockerfile
