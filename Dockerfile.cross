@@ -6,8 +6,7 @@ ENV CURL_VER=__CURL_VER__ \
     PARAMS=""
 
 ARG VCS_REF
-LABEL build_version="Build-date: ${BUILD_DATE}" \
-      maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
+LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
       org.label-schema.build-date=${BUILD_DATE} \
       org.label-schema.name="lucashalbert/curl" \
       org.label-schema.description="A multi-architecture curl image built on alpine linux." \
@@ -16,7 +15,7 @@ LABEL build_version="Build-date: ${BUILD_DATE}" \
       org.label-schema.vcs-url="https://github.com/lucashalbert/curl" \
       org.label-schema.docker.cmd="docker run -t --rm lucashalbert/curl https://curl.haxx.se" \
       org.label-schema.docker.cmd.help="docker run --rm lucashalbert/curl --help" \
-      org.label-schema.usage= "https://curl.haxx.se/docs/manpage.html"
+      org.label-schema.usage="https://curl.haxx.se/docs/manpage.html"
 MAINTAINER Lucas Halbert <lhalbert@lhalbert.xyz>
 
 # __CROSS__COPY static qemu binary for cross-platform support
