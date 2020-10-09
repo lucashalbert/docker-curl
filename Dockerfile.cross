@@ -1,6 +1,7 @@
 FROM __BASEIMAGE_ARCH__/alpine
 
 ENV CURL_VER=__CURL_VER__ \
+	ARCH=__BASEIMAGE_ARCH__ \
     BUILD_DATE=__BUILD_DATE__ \
     VCS_REF=__VCS_REF__ \
     __CROSS__QEMU_ARCH=__QEMU_ARCH__ \
@@ -11,6 +12,7 @@ LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
       org.label-schema.name="lucashalbert/curl" \
       org.label-schema.description="A multi-architecture curl image built on alpine linux." \
       org.label-schema.version=${CURL_VER} \
+      org.label-schema.architecture=${ARCH} \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.vcs-url="https://github.com/lucashalbert/curl" \
       org.label-schema.docker.cmd="docker run -t --rm lucashalbert/curl https://curl.haxx.se" \
