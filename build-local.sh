@@ -1,6 +1,7 @@
 #!/bin/bash
 ver=${ver:-$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")}
-build_date=${build_date:-$(date +"%Y%m%dT%H%M%S")}
+build_date=${build_date:-$(date -u +"%Y-%m-%dT%H:%M:%SZ")}
+VCS_REF=${VCS_REF:-$(git rev-parse --short HEAD)}
 
 for docker_arch in ${docker_archs}; do
     case ${docker_arch} in
