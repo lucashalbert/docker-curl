@@ -20,6 +20,8 @@ install:
 
 before_script:
   - export ver=$(curl -s "https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl" | grep -A3 Version | grep href | sed 's/<[^>]*>//g' | tr -d " ")
+  - export build_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  - export VCS_REF=$(git rev-parse --short HEAD)
 
 script:
   - ./travis.sh
