@@ -7,7 +7,6 @@ SECONDS=0
 # Get start time
 START_TIME=$(date +"%Y%m%dT%H%M%S")
 echo "Start Time: ${START_TIME}"
-export build_date=${START_TIME}
 
 # Check if running in Travis-CI
 if [ -z "$TRAVIS_BRANCH" ]; then 
