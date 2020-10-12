@@ -9,7 +9,8 @@ ENV CURL_VER=__CURL_VER__ \
 
 LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
       org.label-schema.build-date=${BUILD_DATE} \
-      org.label-schema.name="lucashalbert/curl" \
+      org.label-schema.name="curl" \
+      org.label-schema.vendor="lucashalbert" \
       org.label-schema.description="A multi-architecture curl image built on alpine linux." \
       org.label-schema.version=${CURL_VER} \
       org.label-schema.architecture=${ARCH} \
@@ -17,7 +18,8 @@ LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
       org.label-schema.vcs-url="https://github.com/lucashalbert/docker-curl" \
       org.label-schema.docker.cmd="docker run -t --rm lucashalbert/curl https://curl.haxx.se" \
       org.label-schema.docker.cmd.help="docker run --rm lucashalbert/curl --help" \
-      org.label-schema.usage="https://curl.haxx.se/docs/manpage.html"
+      org.label-schema.usage="https://curl.haxx.se/docs/manpage.html" \
+      org.label-schema.schema-version="1.0"
 MAINTAINER Lucas Halbert <lhalbert@lhalbert.xyz>
 
 # __CROSS__COPY static qemu binary for cross-platform support
