@@ -36,7 +36,7 @@ for docker_arch in ${docker_archs}; do
     docker build -f Dockerfile.${docker_arch} -t ${repo}:${docker_arch}-${ver} .
    
     # Check if build should be deployed
-    if [ "$TRAVIS_BRANCH" = "master" ]; then 
+    if [ "$TRAVIS_BRANCH" = "master" ] && [ "${TRAVIS_PULL_REQUEST}" != "true" ]; then 
         # Push image
         docker push ${repo}:${docker_arch}-${ver}
 
@@ -85,7 +85,7 @@ for docker_arch in ${docker_archs}; do
 done
 
 # Check if build should be deployed
-if [ "$TRAVIS_BRANCH" = "master" ]; then 
+if [ "$TRAVIS_BRANCH" = "master" ] && [ "${TRAVIS_PULL_REQUEST}" != "true" ]; then 
     # Create version specific docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create ${repo}:${ver} ${manifest_images}
 
@@ -115,7 +115,7 @@ for docker_arch in ${docker_archs}; do
     esac
 
     # Check if build should be deployed
-    if [ "$TRAVIS_BRANCH" = "master" ]; then 
+    if [ "$TRAVIS_BRANCH" = "master" ] && [ "${TRAVIS_PULL_REQUEST}" != "true" ]; then 
         # Annotate arch/ver docker manifest
         if [ ! -z "${variant}" ]; then
             # Annotate version specific docker manifest
@@ -159,7 +159,7 @@ for docker_arch in ${docker_archs}; do
 done
 
 # Check if build should be deployed
-if [ "$TRAVIS_BRANCH" = "master" ]; then
+if [ "$TRAVIS_BRANCH" = "master" ] && [ "${TRAVIS_PULL_REQUEST}" != "true" ]; then
     # Push version specific docker manifest
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push ${repo}:${ver}
 
