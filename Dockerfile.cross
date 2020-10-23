@@ -7,7 +7,7 @@ ENV CURL_VER=__CURL_VER__ \
     __CROSS__QEMU_ARCH=__QEMU_ARCH__ \
     PARAMS=""
 
-LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
+LABEL org.label-schema.maintainer="Lucas Halbert <contactme@lhalbert.xyz>" \
       org.label-schema.build-date=${BUILD_DATE} \
       org.label-schema.name="curl" \
       org.label-schema.vendor="lucashalbert" \
@@ -20,7 +20,7 @@ LABEL org.label-schema.maintainer="Lucas Halbert <lhalbert@lhalbert.xyz>" \
       org.label-schema.docker.cmd.help="docker run --rm lucashalbert/curl --help" \
       org.label-schema.usage="https://curl.haxx.se/docs/manpage.html" \
       org.label-schema.schema-version="1.0"
-MAINTAINER Lucas Halbert <lhalbert@lhalbert.xyz>
+MAINTAINER Lucas Halbert <contactme@lhalbert.xyz>
 
 # __CROSS__COPY static qemu binary for cross-platform support
 __CROSS__COPY qemu-${QEMU_ARCH}-static /usr/bin/
